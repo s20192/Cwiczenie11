@@ -1,0 +1,53 @@
+﻿@page "/students/{id:int}"
+@inject NavigationManager navigationManager;
+
+<h3>Student's details</h3>
+
+<div class="container">
+    <div class="left">
+        <label>First name: </label>
+        <input type="text" value="@GetStudent().FirstName" readonly /><br />
+        <label>LastName: </label>
+        <input type="text" value="@GetStudent().LastName" readonly /><br />
+        <label>Birthdate: </label>
+        <input type="text" value="@GetStudent().Birthdate" readonly /><br />
+        <label>Studies: </label>
+        <input type="text" value="@GetStudent().Studies.Name" readonly /><br />
+        <div class="divButton" @onclick="OnReturnClicked">
+            <button>Return</button>
+        </div>
+
+    </div>
+
+    <div class="right">
+        <label>Avatar</label>
+        <input type="text" value="http://www..." readonly /><br />
+        <div class="divImg">
+            <img src="@imageSource" class="avatar" height="150px" width="auto" />
+        </div>
+        
+    </div>
+</div>
+
+
+
+@code {
+    private string imageSource = $"/img/avatar.png";
+
+    public Student GetStudent() {
+        foreach (Student s in Students.GetStudents())
+        {
+            if(s.Id == id) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    [Parameter]
+    public int id { get; set; }
+
+    public void OnReturnClicked() {
+        navigationManager.NavigateTo("/students");
+    }
+}

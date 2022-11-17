@@ -1,0 +1,50 @@
+﻿@page "/students"
+@inject IJSRuntime js;
+@inject NavigationManager navigationManager;
+
+
+<h3>Studenci</h3>
+
+<table>
+    <tr>
+        <th>Avatar</th>
+        <th @onclick="@(() => SortTable("FirstName"))">FirstName</th>
+        <th @onclick="@(() => SortTable("LastName"))">LastName</th>
+        <th @onclick="@(() => SortTable("Birthdate"))">Birthdate</th>
+        <th @onclick="@(() => SortTable("Studies"))">Studies</th>
+    </tr>
+
+    @foreach (var s in students)
+        {
+            
+                <ChildStudentComponent Student="s" OnDeleteClicked="DeleteConfirm" OnDetailsClicked="StudentDetailsLoad" />
+            
+        }
+</table>
+
+@code {
+    private Boolean IsAscending = false;
+
+    public async Task DeleteConfirm(Student s) {
+        var confirmed = await js.InvokeAsync<bool>("confirm", "Are you sure?");
+        if(confirmed) {
+           DeleteStudent(s);
+        }
+
+    }
+
+    public async Task StudentDetailsLoad(Student s) {
+        navigationManager.NavigateTo($"students/{s.Id}");
+    }
+
+    private void SortTable(string columnName) {
+        if(!IsAscending) {
+            students = students.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            IsAscending = true;
+        } else {
+            students = students.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            IsAscending = false;
+        }
+        
+    }
+}

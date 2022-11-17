@@ -1,0 +1,12 @@
+﻿
+h3 {
+    text-decoration:underline;
+    margin-bottom: 30px;
+}
+table {
+    width: 80%;
+}
+ th {
+     border: 1px solid;
+     text-align:center;
+ }

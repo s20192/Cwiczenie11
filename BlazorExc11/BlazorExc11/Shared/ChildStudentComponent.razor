@@ -1,0 +1,37 @@
+﻿
+<tr>
+    <td class="tableColumn" >
+        <img src="@imageSource" class="avatar" height="50px" width="auto"/>
+    </td>
+    <td class="tableColumn" @onclick="@(()=>OnDetailsClicked.InvokeAsync(Student))">
+        @Student.FirstName
+    </td>
+    <td class="tableColumn">
+        @Student.LastName
+    </td>
+    <td class="tableColumn">
+        @Student.Birthdate
+    </td>
+    <td class="tableColumn">
+        @Student.Studies.Name
+    </td>
+    <td class="deleteButton">
+        <button @onclick="@(()=>OnDeleteClicked.InvokeAsync(Student))"><i class="fa fa-minus-square fa-2x redcolor"/></button>
+    </td>
+</tr>
+
+
+
+@code {
+    private string imageSource = $"/img/avatar.png";
+
+    [Parameter]
+    public Student Student { get; set; }
+
+    [Parameter]
+    public EventCallback<Student> OnDeleteClicked { get; set; }
+
+    [Parameter]
+    public EventCallback<Student> OnDetailsClicked { get; set; }
+
+}
